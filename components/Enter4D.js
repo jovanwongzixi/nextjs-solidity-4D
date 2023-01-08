@@ -10,7 +10,7 @@ export default function Enter4D(){
         _4DNumber: "0000",
         betAmount: "0.01",
     })
-    const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
+    const { chainId: chainIdHex, isWeb3Enabled, account } = useMoralis()
     const chainId = parseInt(chainIdHex)
     const address = chainId in contractAddress ? contractAddress[chainId][0] : null
 
@@ -43,8 +43,18 @@ export default function Enter4D(){
     // } , [isWeb3Enabled])
 
     useEffect(()=>{
-        console.log(formData)
-    }, [formData])
+        // async function testConnect(){
+        //     console.log("checking connection status")   
+        //     // let provider = new ethers.providers.Web3Provider(window.ethereum);
+        //     // let accounts = await provider.send("eth_requestAccounts",[])
+        //     // console.log(accounts.length)
+        //     // const accounts = await window.ethereum.request({method: 'eth_accounts'})[0] || false;
+        //     // console.log(accounts)
+        // }
+        // testConnect()
+        // console.log("checking connection status")   
+        console.log(account)
+    }, [isWeb3Enabled])
     function handleFormData(event){
         const { name, value } = event.target
         setFormData(prevFormData => {
@@ -53,6 +63,16 @@ export default function Enter4D(){
                 [name]: value,
             }
         })
+    }
+
+    function handleAccountNotConnectedNotification(){
+        dispatch({
+            type: "error",
+            message: "Please connect an account!",
+            title: "No Account Connected!",
+            position: "topR",
+            icon: "bell"
+        }) 
     }
     function handleEnter4DSuccessNotification(){
         dispatch({
@@ -106,6 +126,10 @@ export default function Enter4D(){
         <main>
             <form onSubmit={async (event) => {
                 event.preventDefault()
+                if(!account){
+                    handleAccountNotConnectedNotification()
+                    return
+                }
                 await enter4D({
                     onSuccess: handleEnter4DSuccess,
                     onError:(error) => console.log(error)
@@ -131,6 +155,10 @@ export default function Enter4D(){
             </form>
             <button 
                 onClick={async () => {
+                    if(!account){
+                        handleAccountNotConnectedNotification()
+                        return
+                    }
                     await sendWinnings({
                         onSuccess: handleSendWinningsSuccess,
                         onError: (error) => {
