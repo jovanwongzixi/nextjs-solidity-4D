@@ -1,7 +1,7 @@
 # Nextjs-solidity-4D
 
 ## Description
-Link to webpage: https://nextjs-solidity-4d-oxzzxvd64-jovanwongzixi.vercel.app/
+Link to webpage: https://nextjs-solidity-4d.vercel.app/
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
